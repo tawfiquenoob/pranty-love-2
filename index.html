@@ -1,9 +1,259 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Pranty Love 2</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Pranty ❤️</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+
+<!-- AOS Animation -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+
+<style>
+:root{
+--glow:#ff4d8d;
+--glass: rgba(255,255,255,0.08);
+}
+
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:black;
+color:white;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+}
+
+/* Animated Gradient Background */
+.bg{
+position:fixed;
+inset:0;
+background: radial-gradient(circle at 30% 30%, #0d1230, #000 70%);
+z-index:-3;
+animation: bgMove 20s ease-in-out infinite alternate;
+}
+@keyframes bgMove{
+from{transform:scale(1);}
+to{transform:scale(1.1);}
+}
+
+/* Moving Stars */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-2;
+}
+
+/* Glow Layers */
+.glow{
+position:absolute;
+width:700px;
+height:700px;
+background: radial-gradient(circle,var(--glow),transparent 60%);
+filter: blur(160px);
+animation:pulse 6s infinite alternate;
+z-index:-1;
+}
+@keyframes pulse{
+0%{opacity:.3;}
+100%{opacity:.9;}
+}
+
+/* Glass Card */
+.card{
+backdrop-filter: blur(30px);
+background: var(--glass);
+border:1px solid rgba(255,255,255,0.2);
+border-radius:40px;
+padding:clamp(25px,6vw,60px);
+text-align:center;
+max-width:700px;
+width:90%;
+z-index:2;
+box-shadow:0 0 60px rgba(255,77,141,0.3);
+}
+
+.title{
+font-size:clamp(36px,6vw,70px);
+font-weight:700;
+background:linear-gradient(90deg,#fff,#ff9ec4,#fff);
+background-size:200%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation: shine 6s linear infinite;
+}
+@keyframes shine{to{background-position:200%;}}
+
+.text{
+margin-top:20px;
+font-size:clamp(16px,3vw,22px);
+line-height:1.6em;
+opacity:.9;
+}
+
+/* Buttons */
+.btn{
+margin-top:25px;
+padding:12px 25px;
+border-radius:30px;
+border:none;
+font-weight:600;
+cursor:pointer;
+background:linear-gradient(90deg,#ff4d8d,#ff80ab);
+color:white;
+transition:.3s;
+}
+.btn:hover{
+transform:scale(1.08);
+box-shadow:0 0 20px #ff4d8d;
+}
+
+/* SECRET CENTER MESSAGE */
+#secret{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(.6);
+font-size:clamp(40px,8vw,80px);
+font-weight:700;
+background:linear-gradient(90deg,#fff,#ff9ec4,#fff);
+background-size:200%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+opacity:0;
+pointer-events:none;
+z-index:20;
+text-align:center;
+}
+
+.showSecret{
+animation: secretAnim 3s cubic-bezier(.19,1,.22,1);
+}
+
+@keyframes secretAnim{
+0%{opacity:0; transform:translate(-50%,-50%) scale(.5);}
+30%{opacity:1;}
+70%{opacity:1;}
+100%{opacity:0; transform:translate(-50%,-50%) scale(1.2);}
+}
+
+/* Footer */
+.footer{
+position:fixed;
+bottom:15px;
+font-size:13px;
+opacity:.6;
+}
+</style>
 </head>
 <body>
-    <h1>Welcome to Pranty Love 2</h1>
+
+<div class="bg"></div>
+<div class="glow"></div>
+
+<canvas id="stars"></canvas>
+
+<div id="secret">Tumi 10 / 10 💖</div>
+
+<div class="card" data-aos="zoom-in">
+<div class="title">I Love You ❤️</div>
+<div class="text">
+You are my calm in chaos,<br>
+my light in darkness,<br>
+my favorite thought,<br>
+and my forever home ✨
+</div>
+
+<button class="btn" onclick="triggerSecret()">Tap Me 💕</button>
+<button class="btn" onclick="toggleMusic()">Play Music 🎵</button>
+
+</div>
+
+<div class="footer">Made with ❤️</div>
+
+<!-- Hidden YouTube Embed -->
+<iframe id="ytplayer"
+width="0"
+height="0"
+src=""
+frameborder="0"
+allow="autoplay"
+allowfullscreen>
+</iframe>
+
+<!-- AOS Script -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+AOS.init();
+
+/* STARFIELD */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let stars=[];
+for(let i=0;i<120;i++){
+stars.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*1.5,
+d:Math.random()*0.5
+});
+}
+
+function animateStars(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="white";
+stars.forEach(s=>{
+ctx.beginPath();
+ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+ctx.fill();
+s.y+=s.d;
+if(s.y>canvas.height){
+s.y=0;
+s.x=Math.random()*canvas.width;
+}
+});
+requestAnimationFrame(animateStars);
+}
+animateStars();
+
+window.addEventListener("resize",()=>{
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+});
+
+/* SECRET MESSAGE */
+function triggerSecret(){
+let s=document.getElementById("secret");
+s.classList.remove("showSecret");
+void s.offsetWidth;
+s.classList.add("showSecret");
+}
+
+/* MUSIC TOGGLE */
+let playing=false;
+function toggleMusic(){
+let iframe=document.getElementById("ytplayer");
+if(!playing){
+iframe.src="https://www.youtube.com/embed/vGJTaP6anOU?autoplay=1&loop=1&playlist=vGJTaP6anOU";
+playing=true;
+}else{
+iframe.src="";
+playing=false;
+}
+}
+</script>
+
 </body>
 </html>
